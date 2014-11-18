@@ -19,12 +19,12 @@ describe 'scribble nil' do
       assert_scribble_render '{{ nil.or 0 }}',        'false'
       assert_scribble_render "{{ nil.or 'foo' }}",    'true'
       assert_scribble_render "{{ nil.or '' }}",       'false'
-      assert_scribble_render '{{ nil | true }}',      'true'
-      assert_scribble_render '{{ nil | false }}',     'false'
-      assert_scribble_render '{{ nil | 2 }}',         'true'
-      assert_scribble_render '{{ nil | 0 }}',         'false'
-      assert_scribble_render "{{ nil | 'foo' }}",     'true'
-      assert_scribble_render "{{ nil | '' }}",        'false'
+      assert_scribble_render '{{ nil || true }}',      'true'
+      assert_scribble_render '{{ nil || false }}',     'false'
+      assert_scribble_render '{{ nil || 2 }}',         'true'
+      assert_scribble_render '{{ nil || 0 }}',         'false'
+      assert_scribble_render "{{ nil || 'foo' }}",     'true'
+      assert_scribble_render "{{ nil || '' }}",        'false'
     end
   end
 
@@ -36,12 +36,12 @@ describe 'scribble nil' do
       assert_scribble_render '{{ nil.and 0 }}',        'false'
       assert_scribble_render "{{ nil.and 'foo' }}",    'false'
       assert_scribble_render "{{ nil.and '' }}",       'false'
-      assert_scribble_render '{{ nil & true }}',       'false'
-      assert_scribble_render '{{ nil & false }}',      'false'
-      assert_scribble_render '{{ nil & 2 }}',          'false'
-      assert_scribble_render '{{ nil & 0 }}',          'false'
-      assert_scribble_render "{{ nil & 'foo' }}",      'false'
-      assert_scribble_render "{{ nil & '' }}",         'false'
+      assert_scribble_render '{{ nil && true }}',       'false'
+      assert_scribble_render '{{ nil && false }}',      'false'
+      assert_scribble_render '{{ nil && 2 }}',          'false'
+      assert_scribble_render '{{ nil && 0 }}',          'false'
+      assert_scribble_render "{{ nil && 'foo' }}",      'false'
+      assert_scribble_render "{{ nil && '' }}",         'false'
     end
   end
 
@@ -52,11 +52,11 @@ describe 'scribble nil' do
       assert_scribble_render '{{ nil.equals 1 }}',     'false'
       assert_scribble_render '{{ nil.equals true }}',  'false'
       assert_scribble_render '{{ nil.equals false }}', 'false'
-      assert_scribble_render '{{ nil = nil }}',        'true'
-      assert_scribble_render "{{ nil = 'bar' }}",      'false'
-      assert_scribble_render '{{ nil = 1 }}',          'false'
-      assert_scribble_render '{{ nil = true }}',       'false'
-      assert_scribble_render '{{ nil = false }}',      'false'
+      assert_scribble_render '{{ nil == nil }}',        'true'
+      assert_scribble_render "{{ nil == 'bar' }}",      'false'
+      assert_scribble_render '{{ nil == 1 }}',          'false'
+      assert_scribble_render '{{ nil == true }}',       'false'
+      assert_scribble_render '{{ nil == false }}',      'false'
     end
   end
 

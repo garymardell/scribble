@@ -34,7 +34,7 @@ describe Scribble::Methods::If do
   end
 
   it 'works with boolean expressions' do
-    assert_scribble_render '{{ if 1 = 1       }}Foo {{ elsif 1 < 2   }}Bar {{ end }}Baz', 'Foo Baz'
+    assert_scribble_render '{{ if 1 == 1      }}Foo {{ elsif 1 < 2   }}Bar {{ end }}Baz', 'Foo Baz'
     assert_scribble_render '{{ if 3 > 10      }}Foo {{ elsif 5 <= 10 }}Bar {{ end }}Baz', 'Bar Baz'
     assert_scribble_render '{{ if 5 != 3      }}Foo {{ elsif 1.zero  }}Bar {{ end }}Baz', 'Foo Baz'
     assert_scribble_render '{{ if (0.nonzero) }}Foo {{ elsif 5 < 0   }}Bar {{ end }}Baz', 'Baz'

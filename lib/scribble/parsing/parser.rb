@@ -46,12 +46,12 @@ module Scribble
       rule(:operation)            { logical_or }
 
       # Or / and
-      rule(:logical_or)           { (logical_and >> ((pipe.as(:op) >> logical_and.as(:arg)).as(:or)).repeat(1)).as(:chain) | logical_and }
-      rule(:logical_and)          { (equality >> ((ampersand.as(:op) >> equality.as(:arg)).as(:and)).repeat(1)).as(:chain) | equality }
+      rule(:logical_or)           { (logical_and >> ((logical_pipe.as(:op) >> logical_and.as(:arg)).as(:or)).repeat(1)).as(:chain) | logical_and }
+      rule(:logical_and)          { (equality >> ((logical_ampersand.as(:op) >> equality.as(:arg)).as(:and)).repeat(1)).as(:chain) | equality }
 
       # Equality / inequality
       rule(:equality)             { (comparison >> (equals | differs).repeat(1)).as(:chain) | comparison }
-      rule(:equals)               { (equals_sign.as(:op) >> comparison.as(:arg)).as(:equals) }
+      rule(:equals)               { (logical_equals_sign.as(:op) >> comparison.as(:arg)).as(:equals) }
       rule(:differs)              { (bang_equals.as(:op) >> comparison.as(:arg)).as(:differs) }
 
       # Comparisons
@@ -114,8 +114,11 @@ module Scribble
 
       # Operators
       rule(:pipe)                 { str('|')  >> space? }
+      rule(:logical_pipe)         { str('||') >> space? }
       rule(:ampersand)            { str('&')  >> space? }
+      rule(:logical_ampersand)    { str('&&') >> space? }
       rule(:equals_sign)          { str('=')  >> space? }
+      rule(:logical_equals_sign)  { str('==') >> space? }
       rule(:bang_equals)          { str('!=') >> space? }
       rule(:langle)               { str('<')  >> space? }
       rule(:rangle)               { str('>')  >> space? }

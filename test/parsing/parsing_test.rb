@@ -17,11 +17,11 @@ describe Scribble do
   end
 
   it 'parses binary and unary operators' do
-    assert_scribble_parse '{{ 1 | 2 }}',  '1.or(2)'
+    assert_scribble_parse '{{ 1 || 2 }}', '1.or(2)'
 
-    assert_scribble_parse '{{ 1 & 2 }}',  '1.and(2)'
+    assert_scribble_parse '{{ 1 && 2 }}', '1.and(2)'
 
-    assert_scribble_parse '{{ 1 = 2 }}',  '1.equals(2)'
+    assert_scribble_parse '{{ 1 == 2 }}', '1.equals(2)'
     assert_scribble_parse '{{ 1 != 2 }}', '1.differs(2)'
 
     assert_scribble_parse '{{ 1 > 2 }}',  '1.greater(2)'
@@ -41,12 +41,12 @@ describe Scribble do
   end
 
   it 'parses chains of operators with equal precedence' do
-    assert_scribble_parse '{{ 1 | 2 | 3 }}',   '1.or(2).or(3)'
+    assert_scribble_parse '{{ 1 || 2 || 3 }}', '1.or(2).or(3)'
 
-    assert_scribble_parse '{{ 1 & 2 & 3 }}',   '1.and(2).and(3)'
+    assert_scribble_parse '{{ 1 && 2 && 3 }}', '1.and(2).and(3)'
 
-    assert_scribble_parse '{{ 1 = 2 != 3 }}',  '1.equals(2).differs(3)'
-    assert_scribble_parse '{{ 1 != 2 = 3 }}',  '1.differs(2).equals(3)'
+    assert_scribble_parse '{{ 1 == 2 != 3 }}', '1.equals(2).differs(3)'
+    assert_scribble_parse '{{ 1 != 2 == 3 }}', '1.differs(2).equals(3)'
 
     assert_scribble_parse '{{ 1 > 2 <= 3 }}',  '1.greater(2).less_or_equal(3)'
     assert_scribble_parse '{{ 1 < 2 > 3 }}',   '1.less(2).greater(3)'
@@ -65,15 +65,15 @@ describe Scribble do
   end
 
   it 'combines operators with different precedence' do
-    assert_scribble_parse '{{ 1 & 2 | 3 }}',   '1.and(2).or(3)'
+    assert_scribble_parse '{{ 1 && 2 || 3 }}', '1.and(2).or(3)'
 
-    assert_scribble_parse '{{ 1 = 2 & 3 }}',   '1.equals(2).and(3)'
-    assert_scribble_parse '{{ 1 != 2 & 3 }}',  '1.differs(2).and(3)'
+    assert_scribble_parse '{{ 1 == 2 && 3 }}', '1.equals(2).and(3)'
+    assert_scribble_parse '{{ 1 != 2 && 3 }}', '1.differs(2).and(3)'
 
-    assert_scribble_parse '{{ 1 > 2 = 3 }}',   '1.greater(2).equals(3)'
-    assert_scribble_parse '{{ 1 < 2 = 3 }}',   '1.less(2).equals(3)'
-    assert_scribble_parse '{{ 1 >= 2 = 3 }}',  '1.greater_or_equal(2).equals(3)'
-    assert_scribble_parse '{{ 1 <= 2 = 3 }}',  '1.less_or_equal(2).equals(3)'
+    assert_scribble_parse '{{ 1 > 2 == 3 }}',  '1.greater(2).equals(3)'
+    assert_scribble_parse '{{ 1 < 2 == 3 }}',  '1.less(2).equals(3)'
+    assert_scribble_parse '{{ 1 >= 2 == 3 }}', '1.greater_or_equal(2).equals(3)'
+    assert_scribble_parse '{{ 1 <= 2 == 3 }}', '1.less_or_equal(2).equals(3)'
     assert_scribble_parse '{{ 1 > 2 != 3 }}',  '1.greater(2).differs(3)'
     assert_scribble_parse '{{ 1 < 2 != 3 }}',  '1.less(2).differs(3)'
     assert_scribble_parse '{{ 1 >= 2 != 3 }}', '1.greater_or_equal(2).differs(3)'
@@ -97,15 +97,15 @@ describe Scribble do
   end
 
   it 'respects operator precedence' do
-    assert_scribble_parse '{{ 1 | 2 & 3 }}',   '1.or(2.and(3))'
+    assert_scribble_parse '{{ 1 || 2 && 3 }}', '1.or(2.and(3))'
 
-    assert_scribble_parse '{{ 1 & 2 = 3 }}',   '1.and(2.equals(3))'
-    assert_scribble_parse '{{ 1 & 2 != 3 }}',  '1.and(2.differs(3))'
+    assert_scribble_parse '{{ 1 && 2 == 3 }}', '1.and(2.equals(3))'
+    assert_scribble_parse '{{ 1 && 2 != 3 }}', '1.and(2.differs(3))'
 
-    assert_scribble_parse '{{ 1 = 2 > 3 }}',   '1.equals(2.greater(3))'
-    assert_scribble_parse '{{ 1 = 2 < 3 }}',   '1.equals(2.less(3))'
-    assert_scribble_parse '{{ 1 = 2 >= 3 }}',  '1.equals(2.greater_or_equal(3))'
-    assert_scribble_parse '{{ 1 = 2 <= 3 }}',  '1.equals(2.less_or_equal(3))'
+    assert_scribble_parse '{{ 1 == 2 > 3 }}',  '1.equals(2.greater(3))'
+    assert_scribble_parse '{{ 1 == 2 < 3 }}',  '1.equals(2.less(3))'
+    assert_scribble_parse '{{ 1 == 2 >= 3 }}', '1.equals(2.greater_or_equal(3))'
+    assert_scribble_parse '{{ 1 == 2 <= 3 }}', '1.equals(2.less_or_equal(3))'
     assert_scribble_parse '{{ 1 != 2 > 3 }}',  '1.differs(2.greater(3))'
     assert_scribble_parse '{{ 1 != 2 < 3 }}',  '1.differs(2.less(3))'
     assert_scribble_parse '{{ 1 != 2 >= 3 }}', '1.differs(2.greater_or_equal(3))'
@@ -136,17 +136,17 @@ describe Scribble do
   end
 
   it 'respects operator precedence in complex situations' do
-    assert_scribble_parse '{{ !1 / 2 > 3 < -4 * 5 }}',   '1.not().divide(2).greater(3).less(4.negative().multiply(5))'
-    assert_scribble_parse '{{ 1 | 2 <= !-3 | 4 < 5 }}',  '1.or(2.less_or_equal(3.negative().not())).or(4.less(5))'
-    assert_scribble_parse '{{ -1 + -2 & 3 != 4 = 5 }}',  '1.negative().add(2.negative()).and(3.differs(4).equals(5))'
-    assert_scribble_parse '{{ 1 % 2 - 3 >= !4 != !5 }}', '1.remainder(2).subtract(3).greater_or_equal(4.not()).differs(5.not())'
+    assert_scribble_parse '{{ !1 / 2 > 3 < -4 * 5 }}',    '1.not().divide(2).greater(3).less(4.negative().multiply(5))'
+    assert_scribble_parse '{{ 1 || 2 <= !-3 || 4 < 5 }}', '1.or(2.less_or_equal(3.negative().not())).or(4.less(5))'
+    assert_scribble_parse '{{ -1 + -2 && 3 != 4 == 5 }}', '1.negative().add(2.negative()).and(3.differs(4).equals(5))'
+    assert_scribble_parse '{{ 1 % 2 - 3 >= !4 != !5 }}',  '1.remainder(2).subtract(3).greater_or_equal(4.not()).differs(5.not())'
   end
 
   it 'respects parentheses' do
-    assert_scribble_parse '{{ (1 > 2) = 3 }}',   '1.greater(2).equals(3)'
-    assert_scribble_parse '{{ (1 < 2) = 3 }}',   '1.less(2).equals(3)'
-    assert_scribble_parse '{{ (1 >= 2) = 3 }}',  '1.greater_or_equal(2).equals(3)'
-    assert_scribble_parse '{{ (1 <= 2) = 3 }}',  '1.less_or_equal(2).equals(3)'
+    assert_scribble_parse '{{ (1 > 2) == 3 }}',  '1.greater(2).equals(3)'
+    assert_scribble_parse '{{ (1 < 2) == 3 }}',  '1.less(2).equals(3)'
+    assert_scribble_parse '{{ (1 >= 2) == 3 }}', '1.greater_or_equal(2).equals(3)'
+    assert_scribble_parse '{{ (1 <= 2) == 3 }}', '1.less_or_equal(2).equals(3)'
     assert_scribble_parse '{{ (1 > 2) != 3 }}',  '1.greater(2).differs(3)'
     assert_scribble_parse '{{ (1 < 2) != 3 }}',  '1.less(2).differs(3)'
     assert_scribble_parse '{{ (1 >= 2) != 3 }}', '1.greater_or_equal(2).differs(3)'
@@ -199,10 +199,10 @@ describe Scribble do
   end
 
   it 'gives precedence to operations over commands' do
-    assert_scribble_parse '{{ foo - 2 }}', 'foo.subtract(2)'
-    assert_scribble_parse '{{ (foo - 2) }}', 'foo.subtract(2)'
+    assert_scribble_parse '{{ foo - 2 }}',      'foo.subtract(2)'
+    assert_scribble_parse '{{ (foo - 2) }}',    'foo.subtract(2)'
     assert_scribble_parse '{{ foo(bar - 2) }}', 'foo(bar.subtract(2))'
-    assert_scribble_parse '{{ foo bar - 2 }}', 'foo(bar.subtract(2))'
+    assert_scribble_parse '{{ foo bar - 2 }}',  'foo(bar.subtract(2))'
   end
 
   it 'parses calls that are both command and method style' do
